@@ -4,12 +4,9 @@ using System.Collections.Generic;
 
 namespace ConnectFour
 {
-    
-    public class GameController : MonoBehaviour 
+	public class GameController : MonoBehaviour 
 	{
-        private AI player2;
-        Board board;
-        enum Piece
+		enum Piece
 		{
 			Empty = 0,
 			Blue = 1,
@@ -73,10 +70,10 @@ namespace ConnectFour
 			if(numPiecesToWin > max)
 				numPiecesToWin = max;
 
-			CreateField();
+			CreateField ();
 
 			isPlayersTurn = System.Convert.ToBoolean(Random.Range (0, 1));
-            player2 = new AI();
+
 			btnPlayAgainOrigColor = btnPlayAgain.GetComponent<Renderer>().material.color;
 		}
 
@@ -99,7 +96,6 @@ namespace ConnectFour
 
 			// create an empty field and instantiate the cells
 			field = new int[numColumns, numRows];
-            board = new Board(numColumns, numRows);
 			for(int x = 0; x < numColumns; x++)
 			{
 				for(int y = 0; y < numRows; y++)
@@ -130,23 +126,18 @@ namespace ConnectFour
 		/// <returns>The piece.</returns>
 		GameObject SpawnPiece()
 		{
-            Vector3 spawnPos;
-
-            if (isPlayersTurn)
-                spawnPos = ;
-            //send int array representing pieces into a board class for A.I easy use
-            FieldToBoard();		
+			Vector3 spawnPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+					
 			if(!isPlayersTurn)
 			{
-                int column = player2.TakeTurn(board);
-                spawnPos = new Vector3(column, 0, 0);
+				List<int> moves = GetPossibleMoves();
 
-				/*if(moves.Count > 0)
+				if(moves.Count > 0)
 				{
 					int column = moves[Random.Range (0, moves.Count)];
 
 					spawnPos = new Vector3(column, 0, 0);
-				}*/
+				}
 			}
 
 			GameObject g = Instantiate(
@@ -158,11 +149,6 @@ namespace ConnectFour
 
 			return g;
 		}
-
-        void FieldToBoard()
-        {
-            
-        }
 
 		void UpdatePlayAgainButton()
 		{
@@ -298,8 +284,8 @@ namespace ConnectFour
 				{
 					foundFreeCell = true;
 					field[x, i] = isPlayersTurn ? (int)Piece.Blue : (int)Piece.Red;
-                    board.MakeMove(x);
 					endPosition = new Vector3(x, i * -1, startPosition.z);
+
 					break;
 				}
 			}

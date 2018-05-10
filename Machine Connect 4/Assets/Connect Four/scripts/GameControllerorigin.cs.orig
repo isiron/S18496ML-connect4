@@ -73,7 +73,7 @@ namespace ConnectFour
 			if(numPiecesToWin > max)
 				numPiecesToWin = max;
 
-			CreateField();
+			CreateField ();
 
 			isPlayersTurn = System.Convert.ToBoolean(Random.Range (0, 1));
             player2 = new AI();
@@ -130,10 +130,7 @@ namespace ConnectFour
 		/// <returns>The piece.</returns>
 		GameObject SpawnPiece()
 		{
-            Vector3 spawnPos;
-
-            if (isPlayersTurn)
-                spawnPos = ;
+			Vector3 spawnPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             //send int array representing pieces into a board class for A.I easy use
             FieldToBoard();		
 			if(!isPlayersTurn)
