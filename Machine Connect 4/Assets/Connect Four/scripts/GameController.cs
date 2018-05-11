@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace ConnectFour
 {
-    
     public class GameController : MonoBehaviour 
 	{
+        public Text[] textbox;
+
         private AI player2;
         Board board;
         enum Piece
