@@ -56,7 +56,7 @@ namespace ConnectFour
 		/// 1 = Blue
 		/// 2 = Red
 		/// </summary>
-		int[,] field;
+		public int[,] field;
 
 		bool isPlayersTurn = true;
 		bool isLoading = true;
@@ -129,21 +129,21 @@ void DataSet(){
 }
 
 		//Takes in the players last move position
-		int CostAlgorithm(int lastX, int lastY){
+int CostAlgorithm(int lastX, int lastY){
 
 	int decrementer=10;
 	int count=0;
 	int i=lastY;
-	int j=lastX;
+	//int j=lastX;
 	//to the right
 
+        for(int x = lastX;x<numColumns;x++)
+		{
 
-		while(j<numColumns){
-
-			j++;
+			//j++;
 			//checks if adjacent piece to the right is blue
-			if(field(i,j)==(int)Piece.Blue){
-				decrementer=decrementer+(decrementer*.8);
+			if(field[i,x]==(int)Piece.Blue){
+				decrementer=(int)(decrementer+(decrementer*.8));
 			}
 			else{
 				break;
@@ -157,17 +157,18 @@ void DataSet(){
 		}
 
 	count=0;
-	int i=lastX;
-	int j=lastY
+	 i=lastX;
+       //     j = lastY;
 	//to the left
 
 		i++;
-		while(j>0){
+    for(int x = lastY; x>0;x++)
+	{
 
-			j--;
+			//j--;
 			//checks if adjacent piece is blue
-			if(field(i,j)==(int)Piece.Blue){
-				decrementer=decrementer+(decrementer*.8);
+			if(field[i,x]==(int)Piece.Blue){
+				decrementer=(int)(decrementer+(decrementer*.8));
 			}
 			else{
 				break;
@@ -180,17 +181,15 @@ void DataSet(){
 
 		}
 		count=0;
-		int i=lastX;
-		int j=lastY
+		// i=lastX;
+        //    j = lastY;
 		//up
-	while(i<numRows){
-		i++;
-		
-
-			
+    for(int x = lastX;x<numRows;x++)
+	{
+		//i++;			
 			//checks if adjacent piece is blue
-			if(field(i,j)==(int)Piece.Blue){
-				decrementer=decrementer+(decrementer*.8);
+			if(field[x,lastY]==(int)Piece.Blue){
+				decrementer=(int)(decrementer+(decrementer*.8));
 			}
 			else{
 				break;
@@ -201,19 +200,17 @@ void DataSet(){
 				break;
 			}
 
-		}
+	}
 	count=0;
-	int i=lastX;
-	int j=lastY;
+	//int i=lastX;
+	//int j=lastY;
 			//down
-	while(i<numRows){
-		i++;
-		
-
-			
+    for(int x = lastX; x<numRows;x++)
+    {
+		//i++;			
 			//checks if adjacent piece is blue
-			if(field(i,j)==(int)Piece.Blue){
-				decrementer=decrementer+(decrementer*.8);
+			if(field[x,lastY]==(int)Piece.Blue){
+				decrementer=(int)(decrementer+(decrementer*.8));
 			}
 			else{
 				break;
@@ -226,86 +223,141 @@ void DataSet(){
 
 		}
 		count=0;
-	int i=lastX;
-	int j=lastY;
+	// i=lastX;
+	//int j=lastY;
 	//diagonal case
-	while(i<numRows && j<numColumns){
+    for(int x = lastX; x < numRows; x++)
+    {
+        for(int y = lastY; y < numRows; y++)
+        {
+            if (field[x, y] == (int)Piece.Blue)
+            {
+                decrementer = (int)(decrementer + (decrementer * .8));
+            }
+            else
+            {
+                break;
+            }
+            if (count == 4)
+            {
+                count = 0;
+                break;
+            }
+        }
+    }
+          
+	/*while(i<numRows && j<numColumns)
+    {
 		i++;
-		j++;
-
-			if(field(i,j)==(int)Piece.Blue){
-				decrementer=decrementer+(decrementer*.8);
-			}
-			else{
-				break;
-			}
-			if(count==4){
-				count=0;
-				break;
-			}
-}
+		j++;	
+    }*/
 	//negative j diagonal case(left up)
-	while(i<numRows && j<numColumns&&j!=0){
-		i++;
-		j--;
+    for(int x = lastX; x < numRows; x++)
+    {
+        for(int y = numColumns; y > 0; y--)
+        {
+            if (field[x, y] == (int)Piece.Blue)
+            {
+                decrementer = (int)(decrementer + (decrementer * .8));
+            }
+            else
+            {
+                break;
+            }
+            if (count == 4)
+            {
+                count = 0;
+                break;
+            }
+        }
+	//while(i<numRows && j<numColumns&&j!=0){
+	//	i++;
+		//j--;
 
-			if(field(i,j)==(int)Piece.Blue){
-				decrementer=decrementer+(decrementer*.8);
-			}
-			else{
-				break;
-			}
-			if(count==4){
-				count=0;
-				break;
-			}
-}
+			
+		//	}
+    }
 	//negative i j diagonal case()
-	while(i<numRows && i!=0 && j<numColumns&&j!=0){
-		i--;
-		j--;
+    for(int x = numRows; x > 0; x--)
+    {
+        for(int y = numColumns; y > 0; y--)
+        {
+            if ((field[x,y]) == (int)Piece.Blue)
+            {
+                decrementer = (int)(decrementer + (decrementer * .8));
+            }
+            else
+            {
+                break;
+            }
+            if (count == 4)
+            {
+                count = 0;
+                break;
+            }
+        }
+    }
+	//while(i<numRows && i!=0 && j<numColumns&&j!=0)
+   // {
+	//	i--;
+	//	j--;
 
-			if(field(i,j)==(int)Piece.Blue){
-				decrementer=decrementer+(decrementer*.8);
-			}
-			else{
-				break;
-			}
-			if(count==4){
-				count=0;
-				break;
-			}
-}
+			
+//}
 	//negative i diagonal case
-	while(i<numRows && j<numColumns&&j!=0){
-		i--;
-		j++;
+    for(int x = numRows; x > 0; x--)
+    {
+        for(int y = lastY; y < numColumns; y++)
+        {
+            if (field[x, y] == (int)Piece.Blue)
+            {
+                decrementer = (int)(decrementer + (decrementer * .8));
+            }
+            else
+            {
+                break;
+            }
+            if (count == 4)
+            {
+                count = 0;
+                break;
+            }
+        }
+    }
+	//while(i<numRows && j<numColumns&&j!=0){
+	//	i--;
+		//j++;
 
-			if(field(i,j)==(int)Piece.Blue){
-				decrementer=decrementer+(decrementer*.8);
-			}
-			else{
-				break;
-			}
-			if(count==4){
-				count=0;
-				break;
-			}
-}
+			
+//}
 return decrementer;
 
 }
-
-		/// <summary>
-		/// Spawns a piece at mouse position above the first row
-		/// </summary>
-		/// <returns>The piece.</returns>
-		GameObject SpawnPiece()
+        public float[] Board21D(int[,] field)
+        {
+            float[] oneD = new float[numRows*numColumns];
+            int counter=0;
+            for(int row = 0; row < numRows-1; row++)
+            {
+                for(int col = 0; col<numColumns-1; col++)
+                {
+                   // Debug.Log(counter + " " + col + row);
+                    oneD[counter] = field[row,col];
+                    counter++;
+                }
+            }
+            return oneD;
+        }
+        /// <summary>
+        /// Spawns a piece at mouse position above the first row
+        /// </summary>
+        /// <returns>The piece.</returns>
+        GameObject SpawnPiece()
 		{
-            Vector3 spawnPos;
-
+            Vector3 spawnPos = new Vector3();
+            float[] board1D = Board21D(field);
             if (isPlayersTurn)
-                spawnPos = ;
+                spawnPos = new Vector3(Engine.myNetwork.makeMove(board1D),0,0);
             //send int array representing pieces into a board class for A.I easy use
             FieldToBoard();		
 			if(!isPlayersTurn)
@@ -366,6 +418,7 @@ return decrementer;
 			}
 		}
 
+        
 		// Update is called once per frame
 		void Update () 
 		{
@@ -385,7 +438,7 @@ return decrementer;
 				return;
 			}
 
-			if(isPlayersTurn)
+			/*if(isPlayersTurn)
 			{
 				if(gameObjectTurn == null)
 				{
@@ -411,9 +464,9 @@ return decrementer;
 						mouseButtonPressed = false;
 					}
 				}
-			}
-			else
-			{
+			}*/
+		//	else
+		//	{
 				if(gameObjectTurn == null)
 				{
 					gameObjectTurn = SpawnPiece();
@@ -423,7 +476,7 @@ return decrementer;
 					if(!isDropping)
 						StartCoroutine(dropPiece(gameObjectTurn));
 				}
-			}
+		//	}
 		}
 
 		/// <summary>
