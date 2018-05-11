@@ -357,9 +357,13 @@ return decrementer;
             Vector3 spawnPos = new Vector3();
             float[] board1D = Board21D(field);
             if (isPlayersTurn)
-                spawnPos = new Vector3(Engine.myNetwork.makeMove(board1D),0,0);
+            {
+                spawnPos = new Vector3(Engine.myNetwork.makeMove(board1D), 0, 0);
+                Engine.myNetwork.trainMove(board1D, player2.TakeTurn(board));
+            }
+                
             //send int array representing pieces into a board class for A.I easy use
-            FieldToBoard();		
+            //FieldToBoard();		
 			if(!isPlayersTurn)
 			{
                 int column = player2.TakeTurn(board);

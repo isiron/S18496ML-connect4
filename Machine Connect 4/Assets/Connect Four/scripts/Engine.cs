@@ -157,6 +157,7 @@ public class Engine : MonoBehaviour
             {
                 network_output[index] = 0;
             }
+            network_output[column] = 1;
             backprop(board, network_output);
         }
 
