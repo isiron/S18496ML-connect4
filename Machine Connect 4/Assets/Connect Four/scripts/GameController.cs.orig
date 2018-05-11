@@ -331,11 +331,13 @@ return decrementer;
 			return g;
 		}
 
-
+<<<<<<< HEAD
+=======
         void FieldToBoard()
         {
             
         }
+>>>>>>> 9c6675e0d8ff49e5b86746ff95d63c865ecabe12
 
 		void UpdatePlayAgainButton()
 		{
