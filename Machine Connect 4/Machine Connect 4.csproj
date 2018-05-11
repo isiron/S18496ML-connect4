@@ -240,7 +240,6 @@
     <Compile Include="Assets\Connect Four\scripts\Engine.cs" />
     <Compile Include="Assets\Connect Four\scripts\GameController.cs" />
     <Compile Include="Assets\Connect Four\scripts\MinMax.cs" />
-    <Compile Include="Assets\Connect Four\scripts\Network.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Connect Four\readme.txt" />

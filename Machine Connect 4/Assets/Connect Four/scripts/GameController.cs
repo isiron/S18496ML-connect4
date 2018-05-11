@@ -11,6 +11,7 @@ namespace ConnectFour
 
         private AI player2;
         Board board;
+        
         enum Piece
 		{
 			Empty = 0,
@@ -337,15 +338,39 @@ return decrementer;
 }
         public float[] Board21D(int[,] field)
         {
-            float[] oneD = new float[numRows*numColumns];
+            float[] oneD = new float[numRows*numColumns*4];
             int counter=0;
-            for(int row = 0; row < numRows-1; row++)
+            for(int col = 0; col < numColumns-1; col++)
             {
-                for(int col = 0; col<numColumns-1; col++)
+                for(int row = 0; row<numRows-1; col++)
                 {
-                   // Debug.Log(counter + " " + col + row);
-                    oneD[counter] = field[row,col];
-                    counter++;
+                    // Debug.Log(counter + " " + col + row);
+                    int color = field[col, row];
+                    switch (color)
+                    {
+                        case 0:
+                            oneD[counter] = 1;
+                            oneD[counter + 1] = 1;
+                            oneD[counter + 2] = 0;
+                            oneD[counter + 3] = 0;
+                            break;
+
+                        case 1://Blue
+                            oneD[counter] = 0;
+                            oneD[counter + 1] = 0;
+                            oneD[counter + 2] = 0;
+                            oneD[counter + 3] = 1;
+                            break;
+
+                        case 2://Red
+                            oneD[counter] = 0;
+                            oneD[counter + 1] = 0;
+                            oneD[counter + 2] = 1;
+                            oneD[counter + 3] = 0;
+                            break;
+                    }
+                    //oneD[counter] = ;
+                    counter+=4;
                 }
             }
             return oneD;
@@ -361,7 +386,7 @@ return decrementer;
             if (isPlayersTurn)
             {
                 spawnPos = new Vector3(Engine.myNetwork.makeMove(board1D), 0, 0);
-                Engine.myNetwork.trainMove(board1D, player2.TakeTurn(board));
+                Engine.myNetwork.trainMove(board1D, player2.TakeTurn(board),.15f);
             }
                 
             //send int array representing pieces into a board class for A.I easy use
