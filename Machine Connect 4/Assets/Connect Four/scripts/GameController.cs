@@ -20,6 +20,7 @@ namespace ConnectFour
 		public int numRows = 6;
 		[Range(3, 8)]
 		public int numColumns = 7;
+		public int costScore=7*4 + 4*7 + 6*4 + 4*6;
 
 		[Tooltip("How many pieces have to be connected to win.")]
 		public int numPiecesToWin = 4;
@@ -123,6 +124,177 @@ namespace ConnectFour
 			btnPlayAgain.transform.position = new Vector3(
 				(numColumns-1) / 2.0f, -((numRows-1) / 2.0f) - 1, btnPlayAgain.transform.position.z);
 		}
+void DataSet(){
+	
+}
+
+		//Takes in the players last move position
+		int CostAlgorithm(int lastX, int lastY){
+
+	int decrementer=10;
+	int count=0;
+	int i=lastY;
+	int j=lastX;
+	//to the right
+
+
+		while(j<numColumns){
+
+			j++;
+			//checks if adjacent piece to the right is blue
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			count++;
+			if(count==4){
+				
+				break;
+			}
+
+		}
+
+	count=0;
+	int i=lastX;
+	int j=lastY
+	//to the left
+
+		i++;
+		while(j>0){
+
+			j--;
+			//checks if adjacent piece is blue
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			count++;
+			if(count==4){
+				
+				break;
+			}
+
+		}
+		count=0;
+		int i=lastX;
+		int j=lastY
+		//up
+	while(i<numRows){
+		i++;
+		
+
+			
+			//checks if adjacent piece is blue
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			count++;
+			if(count==4){
+				
+				break;
+			}
+
+		}
+	count=0;
+	int i=lastX;
+	int j=lastY;
+			//down
+	while(i<numRows){
+		i++;
+		
+
+			
+			//checks if adjacent piece is blue
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			count++;
+			if(count==4){
+				
+				break;
+			}
+
+		}
+		count=0;
+	int i=lastX;
+	int j=lastY;
+	//diagonal case
+	while(i<numRows && j<numColumns){
+		i++;
+		j++;
+
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			if(count==4){
+				count=0;
+				break;
+			}
+}
+	//negative j diagonal case(left up)
+	while(i<numRows && j<numColumns&&j!=0){
+		i++;
+		j--;
+
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			if(count==4){
+				count=0;
+				break;
+			}
+}
+	//negative i j diagonal case()
+	while(i<numRows && i!=0 && j<numColumns&&j!=0){
+		i--;
+		j--;
+
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			if(count==4){
+				count=0;
+				break;
+			}
+}
+	//negative i diagonal case
+	while(i<numRows && j<numColumns&&j!=0){
+		i--;
+		j++;
+
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			if(count==4){
+				count=0;
+				break;
+			}
+}
+return decrementer;
+
+}
 
 		/// <summary>
 		/// Spawns a piece at mouse position above the first row
@@ -158,6 +330,7 @@ namespace ConnectFour
 
 			return g;
 		}
+
 
         void FieldToBoard()
         {

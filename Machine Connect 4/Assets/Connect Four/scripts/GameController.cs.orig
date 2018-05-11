@@ -4,9 +4,12 @@ using System.Collections.Generic;
 
 namespace ConnectFour
 {
-	public class GameController : MonoBehaviour 
+    
+    public class GameController : MonoBehaviour 
 	{
-		enum Piece
+        private AI player2;
+        Board board;
+        enum Piece
 		{
 			Empty = 0,
 			Blue = 1,
@@ -17,6 +20,7 @@ namespace ConnectFour
 		public int numRows = 6;
 		[Range(3, 8)]
 		public int numColumns = 7;
+		public int costScore=7*4 + 4*7 + 6*4 + 4*6;
 
 		[Tooltip("How many pieces have to be connected to win.")]
 		public int numPiecesToWin = 4;
@@ -70,10 +74,10 @@ namespace ConnectFour
 			if(numPiecesToWin > max)
 				numPiecesToWin = max;
 
-			CreateField ();
+			CreateField();
 
 			isPlayersTurn = System.Convert.ToBoolean(Random.Range (0, 1));
-
+            player2 = new AI();
 			btnPlayAgainOrigColor = btnPlayAgain.GetComponent<Renderer>().material.color;
 		}
 
@@ -96,6 +100,7 @@ namespace ConnectFour
 
 			// create an empty field and instantiate the cells
 			field = new int[numColumns, numRows];
+            board = new Board(numColumns, numRows);
 			for(int x = 0; x < numColumns; x++)
 			{
 				for(int y = 0; y < numRows; y++)
@@ -119,6 +124,177 @@ namespace ConnectFour
 			btnPlayAgain.transform.position = new Vector3(
 				(numColumns-1) / 2.0f, -((numRows-1) / 2.0f) - 1, btnPlayAgain.transform.position.z);
 		}
+void DataSet(){
+	
+}
+
+		//Takes in the players last move position
+		int CostAlgorithm(int lastX, int lastY){
+
+	int decrementer=10;
+	int count=0;
+	int i=lastY;
+	int j=lastX;
+	//to the right
+
+
+		while(j<numColumns){
+
+			j++;
+			//checks if adjacent piece to the right is blue
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			count++;
+			if(count==4){
+				
+				break;
+			}
+
+		}
+
+	count=0;
+	int i=lastX;
+	int j=lastY
+	//to the left
+
+		i++;
+		while(j>0){
+
+			j--;
+			//checks if adjacent piece is blue
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			count++;
+			if(count==4){
+				
+				break;
+			}
+
+		}
+		count=0;
+		int i=lastX;
+		int j=lastY
+		//up
+	while(i<numRows){
+		i++;
+		
+
+			
+			//checks if adjacent piece is blue
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			count++;
+			if(count==4){
+				
+				break;
+			}
+
+		}
+	count=0;
+	int i=lastX;
+	int j=lastY;
+			//down
+	while(i<numRows){
+		i++;
+		
+
+			
+			//checks if adjacent piece is blue
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			count++;
+			if(count==4){
+				
+				break;
+			}
+
+		}
+		count=0;
+	int i=lastX;
+	int j=lastY;
+	//diagonal case
+	while(i<numRows && j<numColumns){
+		i++;
+		j++;
+
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			if(count==4){
+				count=0;
+				break;
+			}
+}
+	//negative j diagonal case(left up)
+	while(i<numRows && j<numColumns&&j!=0){
+		i++;
+		j--;
+
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			if(count==4){
+				count=0;
+				break;
+			}
+}
+	//negative i j diagonal case()
+	while(i<numRows && i!=0 && j<numColumns&&j!=0){
+		i--;
+		j--;
+
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			if(count==4){
+				count=0;
+				break;
+			}
+}
+	//negative i diagonal case
+	while(i<numRows && j<numColumns&&j!=0){
+		i--;
+		j++;
+
+			if(field(i,j)==(int)Piece.Blue){
+				decrementer=decrementer+(decrementer*.8);
+			}
+			else{
+				break;
+			}
+			if(count==4){
+				count=0;
+				break;
+			}
+}
+return decrementer;
+
+}
 
 		/// <summary>
 		/// Spawns a piece at mouse position above the first row
@@ -126,18 +302,23 @@ namespace ConnectFour
 		/// <returns>The piece.</returns>
 		GameObject SpawnPiece()
 		{
-			Vector3 spawnPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-					
+            Vector3 spawnPos;
+
+            if (isPlayersTurn)
+                spawnPos = ;
+            //send int array representing pieces into a board class for A.I easy use
+            FieldToBoard();		
 			if(!isPlayersTurn)
 			{
-				List<int> moves = GetPossibleMoves();
+                int column = player2.TakeTurn(board);
+                spawnPos = new Vector3(column, 0, 0);
 
-				if(moves.Count > 0)
+				/*if(moves.Count > 0)
 				{
 					int column = moves[Random.Range (0, moves.Count)];
 
 					spawnPos = new Vector3(column, 0, 0);
-				}
+				}*/
 			}
 
 			GameObject g = Instantiate(
@@ -149,6 +330,14 @@ namespace ConnectFour
 
 			return g;
 		}
+
+<<<<<<< HEAD
+=======
+        void FieldToBoard()
+        {
+            
+        }
+>>>>>>> 9c6675e0d8ff49e5b86746ff95d63c865ecabe12
 
 		void UpdatePlayAgainButton()
 		{
@@ -284,8 +473,8 @@ namespace ConnectFour
 				{
 					foundFreeCell = true;
 					field[x, i] = isPlayersTurn ? (int)Piece.Blue : (int)Piece.Red;
+                    board.MakeMove(x);
 					endPosition = new Vector3(x, i * -1, startPosition.z);
-
 					break;
 				}
 			}
