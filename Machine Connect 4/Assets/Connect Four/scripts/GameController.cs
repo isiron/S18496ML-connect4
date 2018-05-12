@@ -8,7 +8,7 @@ namespace ConnectFour
     public class GameController : MonoBehaviour 
 	{
         public Text[] textbox;
-
+        //public Engine engine;
         private AI player2;
         Board board;
         
@@ -73,12 +73,12 @@ namespace ConnectFour
 		void Start () 
 		{
 			int max = Mathf.Max (numRows, numColumns);
-
+            //engine = GameController.GetCo
 			if(numPiecesToWin > max)
 				numPiecesToWin = max;
 
 			CreateField();
-
+           // textbox = GameObject.FindWithTag("UI").GetComponentInChildren<Image>();
 			isPlayersTurn = System.Convert.ToBoolean(Random.Range (0, 1));
             player2 = new AI();
 			btnPlayAgainOrigColor = btnPlayAgain.GetComponent<Renderer>().material.color;
@@ -342,9 +342,9 @@ return decrementer;
             int counter=0;
             for(int col = 0; col < numColumns-1; col++)
             {
-                for(int row = 0; row<numRows-1; col++)
+                for(int row = 0; row<numRows-1; row++)
                 {
-                    // Debug.Log(counter + " " + col + row);
+                    // Debug.Log(counter + " " + col + " "+ row);
                     int color = field[col, row];
                     switch (color)
                     {
@@ -385,8 +385,29 @@ return decrementer;
             float[] board1D = Board21D(field);
             if (isPlayersTurn)
             {
-                spawnPos = new Vector3(Engine.myNetwork.makeMove(board1D), 0, 0);
+                //while(!( > numColumns-1))
+                //Debug.Log("loop started");
+                int move = Engine.myNetwork.makeMove(board1D);
+                if(field[move,numRows-1]!=0)
+                {
+                    Debug.Log("row out of range " + move);
+                    for (int x = 0; x < 100; x++)
+                    {
+                        move = Engine.myNetwork.makeMove(board1D);
+                        if (!(move > field[move, numRows - 1]))
+                            break;
+                            //Debug.Log("loop not ending");
+                    }
+                    move = move++;
+                }
+                
+               // Debug.Log("loop ended");
+                spawnPos = new Vector3(move, 0, 0);
                 Engine.myNetwork.trainMove(board1D, player2.TakeTurn(board),.15f);
+                textbox[0].text = Engine.myNetwork.structureToString(Engine.Network.biases);
+              //  Debug.Log(textbox[0].text);
+                textbox[1].text = Engine.myNetwork.structureToString(Engine.Network.biases);
+               
             }
                 
             //send int array representing pieces into a board class for A.I easy use
@@ -448,6 +469,11 @@ return decrementer;
 				btnPlayAgainTouching = false;
 			}
 		}
+
+        public void DisplayStats()
+        {
+
+        }
 
         
 		// Update is called once per frame

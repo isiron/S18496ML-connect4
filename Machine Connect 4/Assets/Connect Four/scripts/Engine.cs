@@ -11,27 +11,8 @@ public class Engine : MonoBehaviour
 		//CreateConnect4AI ();
 		//Connect4AIMoves ();
 		//Connect4AILearns ();
-		int[] sizes = { 3, 5, 2, 3, 4 };
+		int[] sizes = { 7 * 6 * 3, 126, 70, 7 };
 		myNetwork = new Network (sizes);
-		float[] x = { 3.0f, 1.7f, 4.0f };
-		 output = myNetwork.feedforward (x);
-		//Debug.Log ("O: " + output[0] + ", " + output[1] + ", " + output[2] + ", " + output[3]);
-		float[][][] miniBatch = new float[5][][];
-		for (int index = 0; index < 5; index++)
-		{
-			float[] x_batch = { 1.0f, 0.0f, 1.0f };
-			float[] y_batch = { 5.0f, 5.0f, 0.0f, 5.0f };
-			float[][] batches = new float[2][];
-			batches [0] = x_batch;
-			batches [1] = y_batch;
-			miniBatch[index] = batches;
-		}
-		for (int index = 0; index < 100; index++)
-		{
-			myNetwork.update_mini_batch (miniBatch, 0.15f);
-			output = myNetwork.feedforward (x);
-			//Debug.Log ("O: " + output[0] + ", " + output[1] + ", " + output[2] + ", " + output[3]);
-		}
 	}
 	
 	// Update is called once per frame
@@ -152,15 +133,17 @@ public class Engine : MonoBehaviour
         {
             //Given a input of network size and the correct column to drop the piece,
             //train the AI to make the corresponding move.
-            float[] network_output = new float[sizes[0]];
-            for (int index = 0; index < sizes[0]; index++)
+            float[] network_output = new float[sizes[3]];
+            for (int index = 0; index < sizes[3]; index++)
             {
                 network_output[index] = 0;
             }
             network_output[column] = 1;
             float[][][] miniBatch = new float[1][][];
-            miniBatch[0][0] = board;
-            miniBatch[0][1] = network_output;
+            float[][] batch = new float[2][];
+            batch[0] = board;
+            batch[1] = network_output;
+            miniBatch[0] = batch;
             update_mini_batch(miniBatch, eta);
         }
 
