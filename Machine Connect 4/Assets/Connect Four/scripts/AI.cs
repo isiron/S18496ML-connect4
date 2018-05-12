@@ -14,7 +14,7 @@ public class AI : MonoBehaviour {
 
         public AI()
         {
-            Strength = 40000;
+            Strength = 10000;
             alg.SetStrength(Strength);
         }
 
